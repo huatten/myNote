@@ -119,8 +119,15 @@ export default {
 ```
 #### 总结：
 * 子组件通过events给父组件发送消息，自己的数据发送到父组件
+### 二、$attrs和$listeners
+多级组件嵌套需要传递数据时，通常使用的方法是通过vuex。但如果仅仅是传递数据，而不做中间处理，使用 vuex 处理，未免有点大材小用。为此Vue2.4 版本提供了另一种方法----$attrs/$listeners。
 
-### 二、$on和$emit (中央事件总线)
+* `inheritAttrs`: 默认值true,继承所有的父组件属性（除props的特定绑定）作为普通的HTML特性应用在子组件的根元素上，如果你不希望组件的根元素继承特性设置inheritAttrs: false,但是class属性会继承 **（简单的说，inheritAttrs：true 继承除props之外的所有属性；inheritAttrs：false 只继承class属性）**
+* `$attrs`: 继承所有的父组件属性（除了prop传递的属性、class 和 style ），一般用在子组件的子元素上
+* `$listeners`: 它是一个对象，里面包含了作用在这个组件上的所有监听器，你就可以配合 v-on="$listeners" 将所有的事件监听器指向这个组件的某个特定的子元素。**（相当于子组件继承父组件的事件）**
+
+
+### 三、$on和$emit (中央事件总线)
 上面方式都是处理的父子组件之间的数据传递，那如果两个组件不是父子关系呢?比如兄弟组件。<br>
 此时，我们可以用订阅发布模式，并且挂载到 `Vue.prototype` 之上，这种机制叫做 **总线机制（中央事件总线/事件中心）**，新建一个Vue事件bus对象，然后通过bus.$emit触发事件，bus.$on监听触发的事件，巧妙而轻量地实现了任何组件间的通信，包括父子、兄弟、跨级。下面演示兄弟组件的传值：
 ```js
@@ -195,7 +202,7 @@ export default {
 效果：
 
 ![bus](src/assets/bus.gif)
-### 三、provide和inject (祖先后代)
+### 四、provide和inject (祖先后代)
 props一层层传递，爷爷给孙子还好，如果嵌套了五六层还这么写，那也未免太恶心了，Vue在2.2.0版本为我们提供了 `provide / inject`，这一对选项，需要一起配合使用，祖先组件中通过 `provide` 来提供变量，然后在子孙组件中通过 `inject` 来注入变量。不论子组件有多深，只要调用了inject那么就可以注入provide中的数据。而不是局限于只能从当前父组件的prop属性来获取数据，只要在祖先组件的生命周期内，子孙组件都可以调用。
 
 ```html
@@ -420,7 +427,8 @@ export default {
 
 ![provide&inject实现响应式](src/assets/provide-inject实现响应式.gif)
 
-### 四、$parent、$children和$refs
+### 五、$parent、$children和$refs
+
 * `ref`: 被用来给元素或子组件注册引用信息: 就是绑定在普通元素上，则获取到这个DOM元素，若是绑定在组件上，则获取到的是这个组件的Vue实例vm。
 * `$parent`、`$children`: 访问父子实例
 ```html
@@ -470,9 +478,10 @@ export default {
 
 总结：这两种方法的弊端是，**无法在跨级或兄弟间通信**。
 
-### 五、$dispatch和$broadcast
+### 六、$dispatch和$broadcast
+
 在上面第三条通信方式中我们知道provider和inject不是响应式的，如果子孙元素想通知祖先，就需要hack一下，Vue1中有`dispatch` 和 `boardcast`两个方法，但是vue2中被干掉了，我们自己可以模拟一下，其原理就是通过 `this.$parent` 和 `this.$children`递归查找父组件和子组件来触发事件。
-很多开源软件都自己封装了这种方式，比如element ui，作为一个mixins去使用。[element的mixins](https://github.com/ElemeFE/element/blob/dev/src/mixins/emitter.js])
+很多开源软件都自己封装了这种方式，比如element ui，作为一个mixins去使用。[element的mixins源码](https://github.com/ElemeFE/element/blob/dev/src/mixins/emitter.js])、[《说说element组件库broadcast与dispatch》](https://github.com/answershuto/learnVue/blob/master/docs/%E8%AF%B4%E8%AF%B4element%E7%BB%84%E4%BB%B6%E5%BA%93broadcast%E4%B8%8Edispatch.MarkDown)
 #### dispatch
 递归向上查找获取$parent，向特定的父组件，触发事件
 ```html
@@ -498,7 +507,7 @@ export defalut{
   }
 }
 ```
-**注意：只是向上传递，并没有影响别的元素**
+**注意：只是向上传递，并没有影响别的元素**<br>
 运行结果：
 
 ![dispatch向上传递](src/assets/dispatch向上传递.gif)
@@ -563,5 +572,8 @@ function boardcast(eventName, data) {
   });
 }
 ```
-### 六、$attrs和$listeners
-未完。。。
+
+## 参考文章
+ * [8种vue组件通信方式详细解析实例](http://developer.51cto.com/art/201904/594754.htm)
+ * [vue组件间通信六种方式（完整版）](https://github.com/ljianshu/Blog/issues/66)
+ * [vue组件通信全揭秘(共7章)](https://juejin.im/post/5bd97e7c6fb9a022852a71cf)

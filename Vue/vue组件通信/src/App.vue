@@ -6,8 +6,14 @@
     <button @click="ref()">ref访问组件</button>
     <!-- 父组件监听子组件触发的 sendmsg 方法 -->
     <!-- getmsg(msg) 接受传递过来的文字 -->
-    <child1  ref="child1" :title="titles" :img-height="imgHeight" data-name="child1" v-on:sendmsg="getmsg"></child1>
-    <child2 data-name="child2"></child2>
+    <child1
+      ref="child1"
+      name="child1"
+      :title="titles"
+      :img-height="imgHeight"
+      v-on:sendmsg="getmsg"
+    ></child1>
+    <child2></child2>
   </div>
 </template>
 
@@ -31,21 +37,20 @@ export default {
   //   }
   // },
 
-  provide(){
+  provide() {
     this.text = Vue.observable({
       root: "老祖宗啊"
-    })
+    });
     return {
       text: this.text
-    }
+    };
   },
   data() {
     return {
       msg: "",
       titles: "我是你父亲",
       imgHeight: 100,
-
-      root: "老祖宗啊"
+      root: "老祖宗啊",
     };
   },
   methods: {
@@ -60,14 +65,16 @@ export default {
     //     this.root = this.root === '老祖宗啊' ? '老祖宗变了' : '老祖宗啊'
     //   }
     // },
-    changeRoot(root){ //方案二
-      if(root){
-        this.text.root = root
-      }else{
-        this.text.root = this.text.root === '老祖宗啊' ? '老祖宗变了' : '老祖宗啊'
+    changeRoot(root) {
+      //方案二
+      if (root) {
+        this.text.root = root;
+      } else {
+        this.text.root =
+          this.text.root === "老祖宗啊" ? "老祖宗变了" : "老祖宗啊";
       }
     },
-    ref(){
+    ref() {
       const child1 = this.$refs.child1;
       child1.say();
     }
@@ -101,7 +108,7 @@ em {
   color: red;
   font-size: 14px;
 }
-button{
+button {
   display: block;
 }
 </style>

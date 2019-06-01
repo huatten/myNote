@@ -19,6 +19,8 @@ export default {
       msg: ""
     };
   },
+  inheritAttrs: false, 
+  props:['coo'],
   components: { GrandGrandChild1 },
   mounted() {
     this.$on("dispatch", msg => {

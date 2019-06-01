@@ -17,6 +17,7 @@ import GrandChild2 from "./GrandChild2";
 export default {
   name: "Child1",
   props: ["title", "imgHeight"],
+  inheritAttrs: false, // 可以关闭自动挂载到组件根元素上的没有在props声明的属性
   data() {
     return {
       name: "",

@@ -19,6 +19,12 @@ export default {
       msg: ""
     };
   },
+  props:{
+    color:{
+      type: String,
+      default: "red"
+    }
+  },
   mounted() {
     this.$on("boardcast", msg => {
       this.msg = "接收boardcast消息:" + msg;
