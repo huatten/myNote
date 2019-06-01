@@ -3,9 +3,10 @@
     <h2>父组件</h2>
     <h3>{{msg}}</h3>
     <button @click="changeRoot()">provide-inject响应式</button>
+    <button @click="ref()">ref访问组件</button>
     <!-- 父组件监听子组件触发的 sendmsg 方法 -->
     <!-- getmsg(msg) 接受传递过来的文字 -->
-    <child1 :title="titles" :img-height="imgHeight" data-name="child1" v-on:sendmsg="getmsg"></child1>
+    <child1  ref="child1" :title="titles" :img-height="imgHeight" data-name="child1" v-on:sendmsg="getmsg"></child1>
     <child2 data-name="child2"></child2>
   </div>
 </template>
@@ -65,6 +66,10 @@ export default {
       }else{
         this.text.root = this.text.root === '老祖宗啊' ? '老祖宗变了' : '老祖宗啊'
       }
+    },
+    ref(){
+      const child1 = this.$refs.child1;
+      child1.say();
     }
   },
   components: { Child1, Child2 },
@@ -81,10 +86,10 @@ export default {
 <style>
 div {
   border: 1px orange solid;
-  padding: 6px;
+  padding: 5px 10px;
   display: inline-block;
   vertical-align: top;
-  margin: 20px 8px;
+  margin: 5px 30px;
 }
 h1,
 h2 {
@@ -95,6 +100,9 @@ h3,
 em {
   color: red;
   font-size: 14px;
+}
+button{
+  display: block;
 }
 </style>
 

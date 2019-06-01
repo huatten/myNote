@@ -42,6 +42,9 @@ export default {
   methods: {
     toParent() {
       this.$emit("sendmsg", "子组件1号给父组件传值"); //自定义事件， 传递值
+    },
+    say(){
+      alert("我是子组件的say方法")
     }
   }
 };

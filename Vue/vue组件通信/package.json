@@ -1,5 +1,5 @@
 {
-  "name": "vue组件通信",
+  "name": "vue-communicate",
   "version": "0.1.0",
   "private": true,
   "scripts": {
