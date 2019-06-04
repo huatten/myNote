@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>vue生命周期</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <abc></abc>
+  </div>
+</body>
+<script>
+  Vue.component("abc", {
+    template: `
+      <div class="abc">
+        <button @click="destroy">destroy</button>
+        <input type="text" v-model="text"/>
+        <h3>{{text}}</h3>  
+      </div>
+    `,
+    props:{
+      color: {
+        type: String,
+        default: "red"
+      }
+    },
+    data() {
+      return {
+        text: "vue"
+      }
+    },
+    timer: null,
+    beforeCreate() {
+      console.log("-------beforeCreate 组件实例创建前-------")
+      console.log("%c%s", "color:red", "el   :" + this.$el)       //undefined
+      console.log("%c%s", "color:red", "data   :" + this.$data)   //undefined
+      console.log("%c%s", "color:red", "props   :" + this.$props) //undefined
+      console.log("%c%s", "color:red", "text   :" + this.text)    //undefined
+    },
+    created() {
+      console.log("---------created 组件实例创建完毕--------")
+      this.text += " js"
+      console.log("%c%s", "color:red", "el   :" + this.$el)       //undefined
+      console.log("%c%s", "color:red", "data   :" + this.$data)   //已被初始化
+      console.log("%c%s", "color:red", "data   :" + this.$props)   //已被初始化
+      console.log(this.$data)
+      console.log(this.$props)
+      console.log("%c%s", "color:red", "props   :" + this.$props) //已被初始化
+      console.log("%c%s", "color:red", "text   :" + this.text)    //已被初始化
+    },
+    beforeMount() {
+      console.log("-------beforeMount 组件实例挂载前--------")
+      console.log("%c%s", "color:red", "el   :" + this.$el)       //undefined
+      console.log("%c%s", "color:red", "data   :" + this.$data)   //已被初始化
+      console.log("%c%s", "color:red", "props   :" + this.$props) //已被初始化
+      console.log("%c%s", "color:red", "text   :" + this.text)    //已被初始化
+    },
+    // render(createElement){
+    //   return createElement("i", "render")
+    // },
+    mounted() {
+      console.log("--------mounted 组件实例挂载完毕---------")
+      console.log("%c%s", "color:red", "el   :" + this.$el)       //已被初始化
+      console.log(this.$el)
+      console.log("%c%s", "color:red", "data   :" + this.$data)   //已被初始化
+      console.log("%c%s", "color:red", "props   :" + this.$props) //已被初始化
+      console.log("%c%s", "color:red", "text   :" + this.text)    //已被初始化
+
+      this.$options.timer = setInterval(()=>{
+        console.log("定时器")
+      },1000)
+
+    },
+    beforeUpdate() {
+      console.log("-------beforeUpdate 组件实例更新前--------")
+      console.log("%c%s", "color:red", "el   :" + this.$el)       //已被初始化
+      console.log(this.$el.innerHTML)
+      console.log("%c%s", "color:red", "data   :" + this.$data)   //已被初始化
+      console.log("%c%s", "color:red", "props   :" + this.$props) //已被初始化
+      console.log("%c%s", "color:red", "text   :" + this.text)    //已被初始化
+    },
+    updated() {
+      console.log("--------updated 组件实例更新完毕---------")
+      console.log("%c%s", "color:red", "el   :" + this.$el)       //已被初始化
+      console.log(this.$el.innerHTML)
+      console.log("%c%s", "color:red", "data   :" + this.$data)   //已被初始化
+      console.log("%c%s", "color:red", "props   :" + this.$props) //已被初始化
+      console.log("%c%s", "color:red", "text   :" + this.text)    //已被初始化
+    },
+    beforeDestroy() {
+      console.log("-------beforeDestroy 组件实例销毁前--------")
+      console.log("%c%s", "color:red", "el   :" + this.$el)       //已被初始化
+      console.log(this.$el)
+      console.log("%c%s", "color:red", "data   :" + this.$data)   //已被初始化
+      console.log("%c%s", "color:red", "props   :" + this.$props) //已被初始化
+      console.log("%c%s", "color:red", "text   :" + this.text)    //已被初始化
+
+      clearInterval(this.$options.timer)
+    },
+    destroyed() {
+      console.log("--------destroyed 组件实例销毁完毕---------")
+      console.log("%c%s", "color:red", "el   :" + this.$el)       //已被初始化
+      console.log(this.$el)
+      console.log("%c%s", "color:red", "data   :" + this.$data)   //已被初始化
+      console.log("%c%s", "color:red", "props   :" + this.$props) //已被初始化
+      console.log("%c%s", "color:red", "text   :" + this.text)    //已被初始化
+    },
+    methods:{
+      destroy(){
+        this.$destroy()
+      }
+    }
+  });
+  var app = new Vue({
+    el: "#app"
+  })
+</script>
+
+</html>
