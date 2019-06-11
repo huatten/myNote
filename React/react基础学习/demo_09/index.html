@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>demo_09- 生命周期</title>
+  <script src="../build/react.js"></script>
+  <script src="../build/react.development.js"></script>
+  <script src="../build/react-dom.development.js"></script>
+  <script src="../build/babel.min.js"></script>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script type="text/babel">
+    class Clock extends React.Component{
+      /*组件初始化(initialization)阶段 start*/
+      constructor(props){
+        super(props)
+        this.state = {
+          date: new Date()
+        }
+        this.props
+      }
+      /*组件初始化(initialization)阶段 end*/
+      componentDidMount(){
+        this.timer = setInterval(() => {
+          this.tick()
+        }, 1000);
+      }
+      componentWillUnmount(){
+        clearInterval(this.timer)
+      }
+      tick(){
+        this.setState({
+          date: new Date()
+        })
+      }
+      render(){
+        const time = this.state.date.toLocaleTimeString()
+        const title = this.props.title
+        return (
+          <div>
+            <h1>您好<em>{title}</em>,现在是 {time}</h1> 
+          </div>
+        )
+      }
+    }
+    function App() {
+      return(
+        <div>
+          <Clock title="KD"/>
+          <Clock title="Kobe"/>
+          <Clock title="King"/>
+        </div>
+      )
+    }
+    ReactDOM.render(
+      <App/>,
+      document.getElementById('app')
+    )
+  </script>
+</body>
+
+</html>

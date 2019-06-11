@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>demo_05-组件-this.props.children</title>
+  <script src="../build/react.js"></script>
+  <script src="../build/react.development.js"></script>
+  <script src="../build/react-dom.development.js"></script>
+  <script src="../build/babel.min.js"></script>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script type="text/babel">
+  class NoteList extends React.Component{
+    render(){
+      return (
+        <ul>
+          {
+            React.Children.map(this.props.children, child=>{
+              console.log(this.props.children)
+              return <li>{child}</li>
+            })
+          }
+        </ul>
+      )
+    }
+  }
+    ReactDOM.render(
+      <NoteList>
+        <h3>this.props.children表示组件的所有子节点</h3>
+        <h3>若当前没有子节点：this.props.children 的值是 undefined</h3>
+        <h3>若当前有一个子节点：this.props.children 的值类型是 object</h3>
+        <h3>若当前没有多个子节点：this.props.children 的值类型是 array</h3>
+        <h3>React提供一个工具方法：React.Children 来处理 this.props.children，我们可以用 React.Children.map 来遍历子节点而不用担心this.props.children值类型</h3>
+      </NoteList>,
+      document.getElementById('app')
+    )
+  </script>
+</body>
+
+</html>

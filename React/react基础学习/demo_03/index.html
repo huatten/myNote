@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>demo_03-JSX语法 - 插入js变量</title>
+  <script src="../build/react.js"></script>
+  <script src="../build/react.development.js"></script>
+  <script src="../build/react-dom.development.js"></script>
+  <script src="../build/babel.min.js"></script>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script type="text/babel">
+  const arr = [
+    <li key="KD"><h1>KD is MVP!</h1></li>,
+    <li key="Curry"><h1>Curry is MVP!</h1></li>,
+    <li key="JAMES"><h1>JAMES is MVP!</h1></li>
+  ];
+  ReactDOM.render(
+    <ul>{arr}</ul>,
+    document.getElementById('app')
+  )
+  </script>
+</body>
+
+</html>
