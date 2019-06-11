@@ -20,6 +20,7 @@
       constructor(props){
         super(props)
         this.state = {
+          opacity: 1.0,
           date: new Date()
         }
         this.props
@@ -29,20 +30,35 @@
         this.timer = setInterval(() => {
           this.tick()
         }, 1000);
+        this.timer2 = setInterval(() => {
+          this.opacity()
+        }, 50)
       }
       componentWillUnmount(){
         clearInterval(this.timer)
+        clearInterval(this.timer2)
       }
       tick(){
         this.setState({
           date: new Date()
         })
       }
+      opacity(){
+        var opacity = this.state.opacity;
+        opacity -= .02;
+        if (opacity < 0.1) {
+          opacity = 1.0;
+        }
+        this.setState({
+          opacity: opacity
+        })
+      }
       render(){
         const time = this.state.date.toLocaleTimeString()
         const title = this.props.title
+        //这是因为 React 组件样式是一个对象，所以第一重大括号表示这是 JavaScript 语法，第二重大括号表示样式对象。
         return (
-          <div>
+          <div style={{opacity: this.state.opacity}}>
             <h1>您好<em>{title}</em>,现在是 {time}</h1> 
           </div>
         )

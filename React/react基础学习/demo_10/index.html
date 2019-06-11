@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>demo_10- 条件渲染</title>
+  <script src="../build/react.js"></script>
+  <script src="../build/react.development.js"></script>
+  <script src="../build/react-dom.development.js"></script>
+  <script src="../build/babel.min.js"></script>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script type="text/babel">
+    function LoginButton(props){
+      return (
+        <button onClick={props.onClick}>登录</button>
+      )
+    }
+    function LogoutButton(props){
+      return (
+        <button onClick={props.onClick}>注销</button>
+      )
+    }
+    function Greet(props){
+      const loginFlag = props.loginFlag
+      if(loginFlag){
+        return <h3>KD，欢迎回来！</h3>
+      }else{
+        return <h3>KD，请先登录！</h3>
+      }
+    }
+
+    class LoginControl extends React.Component{
+      constructor(props){
+        super(props)
+        this.state = { loginFlag: false }
+      } 
+      handleLogin = () => {
+        this.setState({
+          loginFlag: true
+        })
+      }
+      handleLogout = () => {
+        this.setState({
+          loginFlag: false
+        })
+      }
+      render(){
+        const loginFlag = this.state.loginFlag
+        let button
+        if(loginFlag){
+          button = <LogoutButton onClick={this.handleLogout}/>
+        }else{
+          button = <LoginButton onClick={this.handleLogin}/>
+        }
+        return (
+          <div>
+            <Greet loginFlag={loginFlag}/>
+            {button}
+          </div>
+        )
+      }
+    }
+    ReactDOM.render(
+      <LoginControl/>,
+      document.getElementById('app')
+    )
+  </script>
+</body>
+
+</html>
