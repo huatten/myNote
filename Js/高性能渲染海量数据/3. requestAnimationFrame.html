@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>requestAnimationFrame</title>
+</head>
+
+<body>
+  <ul id="container"></ul>
+</body>
+<script>
+  //获取容器
+  let oContainer = document.getElementById('container');
+  //插入10w数据
+  const total = 100000;
+  //一次插入条数
+  const once = 100;
+  //总的页数
+  const page = Math.floor(total / once);
+  //每条数据的索引
+  const index = 0;
+
+  function insert(curTotal, curIndex) {
+    if (curTotal <= 0) { //当前数据被取完
+      return;
+    }
+    window.requestAnimationFrame(function () {
+      for (let i = 0; i < once; i++) {
+        let oLi = document.createElement('li');
+        oLi.innerHTML = curIndex + i;
+        oContainer.appendChild(oLi);
+      }
+      insert(curTotal - once, curIndex + once);
+    });
+  }
+  insert(total, index);
+
+  /*
+    与setTimeout相比，requestAnimationFrame最大的优势是由系统来决定回调函数的执行时机。
+    如果屏幕刷新率是60Hz,那么回调函数就每16.7ms被执行一次，如果刷新率是75Hz，那么这个时间间隔就变成了1000/75=13.3ms，换句话说就是，requestAnimationFrame的步伐跟着系统的刷新步伐走。它能保证回调函数在屏幕每一次的刷新间隔中只被执行一次，这样就不会引起丢帧现象
+  */
+</script>
+
+</html>

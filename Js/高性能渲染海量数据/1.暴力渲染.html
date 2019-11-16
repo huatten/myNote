@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>暴力渲染</title>
+</head>
+
+<body>
+  <ul id="container"></ul>
+</body>
+<script>
+  //记录开始时间
+  let start = Date.now();
+  //插入10w数据
+  const total = 100000;
+  //获取容器
+  let oContainer = document.getElementById('container');
+  //插入数据
+  for (let i = 0; i < total; i++) {
+    let oLi = document.createElement('li');
+    oLi.innerHTML = i;
+    oContainer.appendChild(oLi);
+  }
+  //Js运行时间
+  console.log('Js运行时间:', Date.now() - start);
+  /*
+    渲染过程....
+  */
+  //总的运行时间 渲染完成
+  setTimeout(() => {
+    console.log('总的运行时间:', Date.now() - start);
+  }, 0);
+
+  /*
+    执行结果：
+      Js运行时间: 592
+      总的运行时间: 3271
+
+    总结：
+      10w条数据循环操作渲染，js的运行时间为592ms，而最终渲染完成后的时间却是3271ms，为何两次相差时间这么大，是如何统计js运行时间和总的运行时间。
+     
+      1.在 JS 的Event Loop中，当JS引擎所管理的执行栈中的事件以及所有微任务事件全部执行完后，才会触发渲染线程对页面进行渲染
+      2.第一个console.log的触发时间是在页面进行渲染之前，此时得到的间隔时间为JS运行所需要的时间
+      3.第二个console.log是放到 setTimeout 中的，它的触发时间是在渲染完成，在下一次Event Loop中执行的
+
+      因此对于大量数据的渲染，js运算并不是性能的瓶颈，主要瓶颈是渲染
+  */
+</script>
+
+</html>

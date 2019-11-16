@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>分批插入</title>
+</head>
+
+<body>
+  <ul id="container"></ul>
+</body>
+<script>
+  //获取容器
+  let oContainer = document.getElementById('container');
+  //插入10w数据
+  const total = 100000;
+  //一次插入条数
+  const once = 100;
+  //总的页数
+  const page = Math.floor(total / once);
+  //每条数据的索引
+  const index = 0;
+
+  function insert(curTotal, curIndex) {
+    if (curTotal <= 0) { //当前数据被取完
+      return;
+    }
+    setTimeout(() => {
+      for (let i = 0; i < once; i++) {
+        let oLi = document.createElement('li');
+        oLi.innerHTML = curIndex + i;
+        oContainer.appendChild(oLi);
+      }
+      insert(curTotal - once, curIndex + once);
+    }, 0);
+  }
+  insert(total, index);
+
+  /*
+    页面加载很快了，但是快速滚动页面的时候，会发现页面出现闪屏或白屏的现象，出现闪屏现象先要理清一个概念 FPS
+    FPS： FPS表示的是每秒钟画面更新次数，FPS是描述帧变化速度的物理量，大多数电脑显示器的刷新频率是60Hz，大概相当于每秒钟重绘60次
+
+    setTimeout和闪屏现象：
+    1.setTimeout的执行时间并不是确定的。在JS中，setTimeout任务被放进事件队列中，只有主线程执行完才会去检查事件队列中的任务是否需要执行，因此setTimeout的实际执行时间可能会比其设定的时间晚一些。
+    2.刷新频率受屏幕分辨率和屏幕尺寸的影响，因此不同设备的刷新频率可能会不同，而setTimeout只能设置一个固定时间间隔，这个时间不一定和屏幕的刷新时间相同。
+
+  */
+</script>
+
+</html>

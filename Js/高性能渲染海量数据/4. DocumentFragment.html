@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>DocumentFragment</title>
+</head>
+
+<body>
+  <ul id="container"></ul>
+</body>
+<script>
+  //获取容器
+  let oContainer = document.getElementById('container');
+  //插入10w数据
+  const total = 100000;
+  //一次插入条数
+  const once = 100;
+  //总的页数
+  const page = Math.floor(total / once);
+  //每条数据的索引
+  const index = 0;
+
+  function insert(curTotal, curIndex) {
+    if (curTotal <= 0) { //当前数据被取完
+      return;
+    }
+    window.requestAnimationFrame(function () {
+      let fragment = document.createDocumentFragment(); //文档碎片
+      for (let i = 0; i < once; i++) {
+        let oLi = document.createElement('li');
+        oLi.innerHTML = curIndex + i;
+        fragment.appendChild(oLi);
+      }
+      oContainer.appendChild(fragment);
+      insert(curTotal - once, curIndex + once);
+    });
+  }
+  insert(total, index);
+
+  /*
+    DocumentFragment，文档片段接口，表示一个没有父级文件的最小文档对象。它被作为一个轻量版的Document使用，用于存储已排好版的或尚未打理好格式的XML片段。最大的区别是因为DocumentFragment不是真实DOM树的一部分，它的变化不会触发DOM树的（重新渲染) ，且不会导致性能等问题。
+    可以使用document.createDocumentFragment方法或者构造函数来创建一个空的DocumentFragment。
+    DocumentFragments是DOM节点，但并不是DOM树的一部分，可以认为是存在内存中的，所以将子元素插入到文档片段时不会引起页面回流/重排。
+  */
+</script>
+
+</html>
