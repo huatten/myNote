@@ -9,6 +9,7 @@
 </head>
 
 <body>
+  <a href="https://www.bilibili.com/video/av74624931?t=214" target="_blank">深入JavaScript中的EventLoop</a>
   <ul id="container"></ul>
 </body>
 <script>
@@ -39,7 +40,9 @@
   insert(total, index);
 
   /*
-    与setTimeout相比，requestAnimationFrame最大的优势是由系统来决定回调函数的执行时机。
+    与setTimeout相比，requestAnimationFrame最大的优势是由系统来决定回调函数的执行时机
+    标准：requestAnimationFrame 是在渲染之前运行的！！！
+    但是：Edge和Safari会把 requestAnimationFrame 放在绘制的后面，意味着直到下一帧，你才能看到页面的变化，屏幕看起来有很大的延迟
     如果屏幕刷新率是60Hz,那么回调函数就每16.7ms被执行一次，如果刷新率是75Hz，那么这个时间间隔就变成了1000/75=13.3ms，换句话说就是，requestAnimationFrame的步伐跟着系统的刷新步伐走。它能保证回调函数在屏幕每一次的刷新间隔中只被执行一次，这样就不会引起丢帧现象
   */
 </script>
