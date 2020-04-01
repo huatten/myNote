@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>数据劫持</title>
+</head>
+
+<body>
+  <div id="app"></div>
+  <input type="text" id="input" />
+</body>
+<script>
+  /*
+    数据劫持，指的是在访问或者修改对象的某个属性时，通过一段代码拦截这个行为，进行额外的操作或者修改返回结果。
+    比较典型的就是 Object.defineProperty 和 ES6中的 Proxy，数据劫持的著名应用就是双向绑定
+  */
+
+  //定义一个空对象
+  let obj = {};
+  //定义一个空数据
+  let value = "";
+
+  Object.defineProperty(obj, "text", {
+    get() {
+      console.log("执行了get函数");
+      return value;
+    },
+    set(newValue) {
+      console.log("执行了set函数");
+      //当数据发生变动时候，重新渲染对应的html
+      document.getElementById("app").innerHTML = newValue;
+      value = newValue;
+    }
+  })
+  //监听input事件，
+  //当发生变化的时候，重新设置obj的text属性，触发set函数，则view自动更新
+  document.getElementById("input").addEventListener("input", function (e) {
+    obj.text = e.target.value;
+  })
+</script>
+
+</html>

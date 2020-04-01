@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>观察者模式</title>
+</head>
+
+<body>
+  <button onclick="sell()">尾盘开售啦</button>
+</body>
+<script>
+  //定义一个事件处理中心
+  //该对象中包含subs的数组，存放需要遍历执行的函数
+  //相当于客户花名册，只不过需要提供一个添加的通知的功能
+  function EventHandle() {
+    let subs = []
+    //添加需要执行的函数
+    this.addSubs = function (sub) {
+      sub && subs.push(sub)
+    }
+    //遍历通知
+    this.notify = function () {
+      subs.forEach(function (sub) {
+        sub.update()
+      })
+    }
+  }
+  //实例化
+  let ev = new EventHandle();
+
+  //尾盘开售啦
+  //发布者
+  function sell() {
+    console.log("尾盘开售啦")
+    ev.notify()
+  }
+
+  //订阅者客户小华
+  (function Hua() {
+    const name = "小华"
+    ev.addSubs({
+      update: function () {
+        console.log(name + "收到了通知")
+      }
+    })
+  })(); //写了两个闭包子调用，如果不写封号，第二个就报错误
+
+  //订阅者客户小红
+  (function Hong() {
+    const name = "小红"
+    ev.addSubs({
+      update: function () {
+        console.log(name + "收到了通知")
+      }
+    })
+  })()
+</script>
+
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Object.defineProperty</title>
+</head>
+
+<body>
+  <script>
+    /*
+      Object.defineProperty： 方法会直接在一个对象上定义新属性，或者修改对象的现有属性，并返回此对象
+      调用说明：Object.defineProperty(obj, prop, desc)
+      obj：需要定义属性的当前对象
+      prop：当前需要定义的属性名
+      desc：属性描述符
+            1.数据描述符：特有的两个属性 value 和 writeable
+            2.存取描述符：由一对getter 和 setter 函数功能来描述的属性
+      数据描述符和存取描述符均具有 configrable（可配置） 和 enumerable（可枚举）描述符
+    */
+
+    {
+      //我们需要让一个对象全面被我们监控，这样才能及时更新视图
+      let data = {
+        val: 0
+      }
+
+      let data1 = {}
+      data1._val = 0 //先用一个属性存一下 val 的值
+      Object.defineProperty(data1, 'val', {
+        get() {
+          return this._val
+        },
+        set(value) {
+          console.log('监听到啦')
+          this._val = value
+        }
+      })
+      data1.val = 10   //监听到啦
+
+      //但是如果我们直接操作data1._val
+      data1._val = 11  //什么都没输出
+      console.log(data1.val)  //11
+    }
+
+    {
+      //既然你喜欢直接操作对象，那我用一个代理函数，传入一个匿名对象，输出一个我监听的代理对象
+      function proxy({ data }) {
+        const obj = {}
+        Object.keys(data).forEach(k => {
+          Object.defineProperty(obj, k, {
+            get() {
+              return data[k]
+            },
+            set(val) {
+              data[k] = val
+              console.log('监听到啦值是' + data[k])
+            }
+          })
+        })
+        return obj
+      }
+      let data1 = proxy({ data: { val: 0 } })
+      data1.val = 2  //监听到啦值是2
+      //但是此时还是有问题，如果我们像vue那样 const vm = new Vue({data:_data})
+      let _data = { val: 0 }
+      let data2 = proxy({ data: _data })
+
+      data2.val = 3 //监听到啦值是3
+      _data.val = 4 //什么都没，值却变了
+      console.log(data2.val)  //4
+    }
+    {
+      //把传入的对象也一起监听
+      function proxy({ data }) {
+        Object.keys(data).forEach(k => {
+          let value = data[k]
+          Object.defineProperty(data, k, {
+            get() {
+              return value
+            },
+            set(val) {
+              value = val
+              console.log('原始对象监听到啦值是' + data[k])
+            }
+          })
+        })
+
+        const obj = {}
+        Object.keys(data).forEach(k => {
+          Object.defineProperty(obj, k, {
+            get() {
+              return data[k]
+            },
+            set(val) {
+              data[k] = val
+              console.log('代理对象监听到啦值是' + data[k])
+            }
+          })
+        })
+        return obj
+      }
+      let _data = { val: 0 }
+      let data4 = proxy({ data: _data })
+      data4.val = 5 //原始对象监听到啦值是5
+      //代理对象监听到啦值是5 
+      _data.val = 6 //原始对象监听到啦值是6
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ES6中的getter和setter</title>
+</head>
+
+<body>
+  <script>
+    {
+      const person = {
+        firstName: "jin",
+        lastName: "hua",
+        fullName() {
+          return this.firstName + this.lastName
+        }
+      }
+      console.log(person.fullName())  //jinhua
+      console.log('-----------我是分割线-----------')
+    }
+
+    {
+      //ES6的getter简化
+      const person = {
+        firstName: "jin",
+        lastName: "hua",
+        get fullName() {
+          return this.firstName + this.lastName
+        }
+      }
+      //其实也就是简化了函数的括号
+      console.log(person.fullName) //jinhua
+      console.log('-----------我是分割线-----------')
+    }
+
+    {
+      //对姓名进行设置，此时就会用到setter 这一步将赋值和取值的过程转变为了函数
+      const person = {
+        firstName: "jin",
+        lastName: "hua",
+        get fullName() {
+          return this.firstName + this.lastName
+        },
+        set fullName(value) {
+          this.firstName = value[0]
+          this.lastName = value.slice(1)
+        }
+      }
+      person.fullName = "lijuan"
+      //设置了set以后， "= xxx" 这个操作会调用 set 函数，等号后面的值便是函数的参数
+      console.log(person.fullName) //lijuan
+      /*这一步将 赋值 和 取值 的过程转变为了函数，之后就可以在函数中添加各种操作 如通知 视图 改变
+        但是getter 和 setter只能在对象初始化的时候设置，但是在Vue中传入的对象已经是初始化完毕的对象，Vue是如何监听？答案就是 Object.defineProperty
+      */
+    }
+  </script>
+</body>
+
+</html>
