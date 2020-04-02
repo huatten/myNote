@@ -35,6 +35,7 @@ export default class Observer {
       set: (newValue) => {
         console.log("set")
         value = newValue
+        //TODO 触发view视图更新
       }
     })
     this.walk(value)
