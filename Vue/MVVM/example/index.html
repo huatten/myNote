@@ -1,11 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>MVVM核心原理</title>
+  <script src="../dist/mvue.js"></script>
 </head>
+
 <body>
-  
+  <div id="app">
+    <p>{{msg}}</p>
+    <p v-text="msg"></p>
+  </div>
 </body>
+<script>
+  let vm = new Mvue({
+    el: "#app",
+    data: {
+      msg: "hello Mvue",
+      arr: [1, 2, 3, 4],
+      obj: {
+        age: 100
+      }
+    },
+    methods:{
+      
+    }
+  })
+</script>
+
 </html>
