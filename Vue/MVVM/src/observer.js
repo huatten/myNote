@@ -1,3 +1,4 @@
+import Dep from "./dep";
 //数据劫持
 export default class Observer {
   constructor(data) {
@@ -25,17 +26,20 @@ export default class Observer {
    * @param {*} value 
    */
   defineReactive(data, key, value) {
+    let dep = new Dep();
     Object.defineProperty(data, key, {
       enumerable: true, //可遍历
       configurable: false, //不可再配置
       get: () => {
         console.log("get")
+        Dep.target && dep.addSub(Dep.target)
         return value;
       },
       set: (newValue) => {
         console.log("set")
         value = newValue;
         //TODO 触发view视图更新
+        dep.notify();
       }
     })
     this.walk(value);
