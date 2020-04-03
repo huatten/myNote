@@ -34,7 +34,52 @@ export default class Compiler {
    */
   compilerElementNode(node) {
     //TODO 元素的编译 指令
+    let attrs = [...node.attributes];
+    attrs.forEach(attr => {
+      let { name: attrName, value: attrValue } = attr;
+      if (attrName.startsWith("v-")) {
+        let dirName = attrName.slice(2);
+        switch (dirName) {
+          case "text":
+            //textContent
+            new Watcher(attrValue, this.context, newVal => {
+              node.textContent = newVal;
+            });
+            break;
+          case "html":
+            //innerHTML
+            new Watcher(attrValue, this.context, newVal => {
+              node.innerHTML = newVal;
+            });
+            break;
+          case "model":
+            //value
+            new Watcher(attrValue, this.context, newVal => {
+              node.value = newVal;
+            });
+            node.addEventListener("input", e => {
+              this.context[attrValue] = e.target.value;
+            })
+            break;
+        }
+      }
+      if (attrName.startsWith("@")) {
+        this.compilerMethod(this.context, node, attrName, attrValue)
+      }
+    })
     this.compiler(node);
+  }
+  /**
+   * 编译函数
+   * @param {*} context 
+   * @param {*} node 
+   * @param {*} attrName 
+   * @param {*} attrValue 
+   */
+  compilerMethod(context, node, attrName, attrValue) {
+    let type = attrName.slice(1);
+    let fn = context[attrValue];
+    node.addEventListener(type, fn.bind(context));
   }
   /**
    * 编译文本节点
@@ -55,6 +100,7 @@ export default class Compiler {
       })
     }
   }
+
   /**
    * 文本转换为表达式
    * 123{{msg +  '!'}}456  =>  123 + msg +  '!' + 456

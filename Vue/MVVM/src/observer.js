@@ -33,6 +33,7 @@ export default class Observer {
       get: () => {
         console.log("get")
         Dep.target && dep.addSub(Dep.target)
+        console.log(Dep.target)
         return value;
       },
       set: (newValue) => {

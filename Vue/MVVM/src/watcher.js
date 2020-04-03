@@ -7,7 +7,7 @@ export default class Watcher {
     this.exp = exp;
     this.scope = scope;
     this.cb = cb;
-    this.id = ++uid;
+    this.id = uid++;
     this.update();
   }
   /**
@@ -36,6 +36,6 @@ export default class Watcher {
    */
   static computedExpression(exp, scope) {
     let fn = new Function("scope", `with(scope){return ${exp}}`);
-    return fn(scope)
+    return fn(scope);
   }
 }

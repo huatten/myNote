@@ -6,9 +6,10 @@ class Mvue {
     this.$el = document.querySelector(options.el);
     //转存数据
     this.$data = options.data || {};
+    this.$methods = options.methods || {};
     //数据和函数的代理
     this._proxyData(this.$data)
-    this._proxyMethods();
+    this._proxyMethods(this.$methods);
     //数据劫持
     new Observer(this.$data);
     //模版编译
