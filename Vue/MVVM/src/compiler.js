@@ -1,3 +1,4 @@
+import Watcher from "./watcher";
 //模板编译
 export default class Compiler {
   constructor(context) {
@@ -49,8 +50,9 @@ export default class Compiler {
       //1.重新计算表达式的值
       //2.node.textContent给最新的值
       //即可完成Model => View的响应式
-      console.log(reg)
-
+      new Watcher(reg, this.context, (newVal) => {
+        node.textContent = newVal;
+      })
     }
   }
   /**
