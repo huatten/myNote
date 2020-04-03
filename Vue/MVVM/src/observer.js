@@ -4,7 +4,7 @@ export default class Observer {
     //数据转存
     this.data = data;
     //遍历data完成所有数据的劫持
-    this.walk(this.data)
+    this.walk(this.data);
   }
   /**
    * 遍历对象
@@ -15,7 +15,7 @@ export default class Observer {
       return;
     }
     Object.keys(data).forEach(key => {
-      this.defineReactive(data, key, data[key])
+      this.defineReactive(data, key, data[key]);
     })
   }
   /**
@@ -30,14 +30,14 @@ export default class Observer {
       configurable: false, //不可再配置
       get: () => {
         console.log("get")
-        return value
+        return value;
       },
       set: (newValue) => {
         console.log("set")
-        value = newValue
+        value = newValue;
         //TODO 触发view视图更新
       }
     })
-    this.walk(value)
+    this.walk(value);
   }
 }
