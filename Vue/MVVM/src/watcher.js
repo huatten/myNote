@@ -31,11 +31,12 @@ export default class Watcher {
    * 把scope当作作用域
    * 函数内部使用with来指定作用域
    * 执行函数得到表达式的值
+   * Function()的作用域是全局的
    * @param {*} exp 
    * @param {*} scope 
    */
   static computedExpression(exp, scope) {
-    let fn = new Function("scope", `with(scope){return ${exp}}`);
+    let fn = new Function("scope", `with(scope){return ${exp}}`); //https://www.jianshu.com/p/7d17d1972577
     return fn(scope);
   }
 }

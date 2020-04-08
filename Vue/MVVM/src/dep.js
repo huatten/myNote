@@ -5,7 +5,9 @@ export default class Dep {
     this.subs = {}
   }
   addSub(target) {
-    this.subs[target.id] = target;
+    if (!this.subs[target.id]) {
+      this.subs[target.id] = target;
+    }
   }
   notify() {
     for (let id in this.subs) {

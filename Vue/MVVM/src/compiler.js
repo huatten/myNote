@@ -39,6 +39,7 @@ export default class Compiler {
       let { name: attrName, value: attrValue } = attr;
       if (attrName.startsWith("v-")) {
         let dirName = attrName.slice(2);
+        node.removeAttribute(attrName);
         switch (dirName) {
           case "text":
             //textContent
@@ -54,17 +55,20 @@ export default class Compiler {
             break;
           case "model":
             //value
-            new Watcher(attrValue, this.context, newVal => {
-              node.value = newVal;
-            });
-            node.addEventListener("input", e => {
-              this.context[attrValue] = e.target.value;
-            })
+            if (node.tagName.toLowerCase() === "input") { 
+              new Watcher(attrValue, this.context, newVal => {
+                node.value = newVal;
+              });
+              node.addEventListener("input", e => {
+                this.context[attrValue] = e.target.value;
+              })
+            }
             break;
         }
       }
       if (attrName.startsWith("@")) {
-        this.compilerMethod(this.context, node, attrName, attrValue)
+        this.compilerMethod(this.context, node, attrName, attrValue);
+        node.removeAttribute(attrName);
       }
     })
     this.compiler(node);

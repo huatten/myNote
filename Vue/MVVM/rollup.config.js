@@ -5,6 +5,7 @@ const nodeResolve = require("rollup-plugin-node-resolve");  //帮助寻找node_m
 const commonjs = require("rollup-plugin-commonjs");              // 将非ES6语法的包转为ES6可用
 const serve = require("rollup-plugin-serve");              //类比 webpack-dev-server, 提供静态服务器能力
 const livereload = require('rollup-plugin-livereload');   // 监听文件改变，并刷新浏览器
+const { uglify } = require("rollup-plugin-uglify");       // 须解构式导包
 const PORT = 3000;
 const resolveFile = function (filePath) {
   return path.join(__dirname, ".", filePath)
@@ -22,7 +23,8 @@ module.exports = {
       port: PORT,
       contentBase: [resolveFile("example"), resolveFile("dist")]
     }),
-    livereload()
+    livereload(),
+    uglify()
   ],
   output: {
     file: resolveFile("dist/mvue.js"),

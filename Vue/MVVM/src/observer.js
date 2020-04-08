@@ -31,15 +31,17 @@ export default class Observer {
       enumerable: true, //可遍历
       configurable: false, //不可再配置
       get: () => {
-        console.log("get")
         Dep.target && dep.addSub(Dep.target)
         console.log(Dep.target)
         return value;
       },
       set: (newValue) => {
-        console.log("set")
+        if (value === newValue) {
+          return;
+        }
+        // TODO 触发view视图更新
         value = newValue;
-        //TODO 触发view视图更新
+        // 数据更新后，通知所有依赖watcher，重新计算页面展示
         dep.notify();
       }
     })
