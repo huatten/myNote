@@ -18,8 +18,9 @@ export default class Compiler {
    * @param {*} node 
    */
   compiler(node) {
-    if (node.childNodes && node.childNodes.length) {
-      node.childNodes.forEach(child => {
+    let childNodes = node.childNodes;
+    if (childNodes && childNodes.length) {
+      [...childNodes].forEach(child => {
         if (child.nodeType === 1) { //元素节点
           this.compilerElementNode(child);
         } else if (child.nodeType === 3) { //文本节点
@@ -55,7 +56,7 @@ export default class Compiler {
             break;
           case "model":
             //value
-            if (node.tagName.toLowerCase() === "input") { 
+            if (node.tagName.toLowerCase() === "input") {
               new Watcher(attrValue, this.context, newVal => {
                 node.value = newVal;
               });
@@ -71,6 +72,7 @@ export default class Compiler {
         node.removeAttribute(attrName);
       }
     })
+    //如果是元素需要把自己传进去再去遍历子节点
     this.compiler(node);
   }
   /**
@@ -132,11 +134,12 @@ export default class Compiler {
    */
   nodeToFragment(node) {
     let fragment = document.createDocumentFragment();
-    if (node.childNodes && node.childNodes.length) {
-      node.childNodes.forEach(child => {
+    let childNodes = node.childNodes;
+    if (childNodes && childNodes.length) {
+      [...childNodes].forEach(child => {
         //判断是不是我们要添加到节点
         //如果是无用的节点或者是换行是不会添加的
-        if (!this.ignorable(child)) {
+        if (!this.isIgnorable(child)) {
           fragment.appendChild(child);
         }
       })
@@ -147,7 +150,7 @@ export default class Compiler {
    * 忽略哪些节点不添加到文档片段
    * @param {*} node 
    */
-  ignorable(node) {
+  isIgnorable(node) {
     let reg = /^[\t\n\r]+/;
     //注释、元素的文本内容或者属性
     return node.nodeType === 8 || (node.nodeType === 3 && reg.test(node.textContent))
