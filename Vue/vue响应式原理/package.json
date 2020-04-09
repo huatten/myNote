@@ -1,0 +1,17 @@
+{
+  "name": "vue-source-code",
+  "version": "1.0.0",
+  "description": "vue responsive principle",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack-dev-server --inline"
+  },
+  "author": "jinhua5",
+  "license": "ISC",
+  "devDependencies": {
+    "html-webpack-plugin": "^4.0.4",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
+  }
+}
