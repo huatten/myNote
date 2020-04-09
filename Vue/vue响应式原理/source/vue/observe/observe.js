@@ -26,12 +26,12 @@ export default class Observe {
       configurable: false,
       enumerable: true,
       get() {
-        console.log("触发get");
+        console.log("获取数据，触发get");
         return value;
       },
       set(newValue) {
         if (newValue !== value) {
-          console.log("触发set");
+          console.log("设置数据，触发set");
           //TODO 触发view
           value = newValue;
         }

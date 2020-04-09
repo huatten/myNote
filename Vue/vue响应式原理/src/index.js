@@ -4,11 +4,12 @@ let vm = new Vue({
   data() {
     return {
       msg: "Vue",
-      school: { name: "Buu" }
+      school: { name: "Buu" },
+      arr: [1, 2, 3]
     }
   },
   computed: {},
   watch: {}
 })
 
-vm.$data.msg == 1
+vm.arr.push(4)

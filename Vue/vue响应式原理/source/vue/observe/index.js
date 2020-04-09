@@ -24,10 +24,30 @@ export function observe(data) {
 function initData(vm) {
   let data = vm.$options.data;
   data = vm.$data = typeof data === "function" ? data.call(vm) : data || {};
+  proxyData(vm, data)
   //观察数据
   observe(data);
+
 }
 
 function initComputed() { }
 
 function initWatch() { }
+
+/**
+ * 数据代理 vm.$data.msg => vm.msg
+ * @param {*} vm 
+ * @param {*} data 
+ */
+function proxyData(vm, data) {
+  Object.keys(data).forEach(key => {
+    Object.defineProperty(vm, key, {
+      set(newValue) {
+        data[key] = newValue;
+      },
+      get() {
+        return data[key];
+      }
+    });
+  });
+}
