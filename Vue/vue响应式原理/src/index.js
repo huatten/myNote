@@ -5,11 +5,12 @@ let vm = new Vue({
     return {
       msg: "Vue",
       school: { name: "Buu" },
-      arr: [1, 2, 3]
+      arr: [1, 2, 3, {age: 30}]
     }
   },
   computed: {},
   watch: {}
 })
 
-vm.arr.push(4)
+vm.arr[3].age = 100
+vm.arr.splice(1,2)

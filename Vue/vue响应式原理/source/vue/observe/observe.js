@@ -1,7 +1,15 @@
+import { observe } from "./index";
+import { arrayMethods, observeArray } from "./array";
 export default class Observe {
   constructor(data) {
     //数据劫持 data => getter setter
-    this.walk(data);
+    if (Array.isArray(data)) {
+      data.__proto__ = arrayMethods;
+      //只能拦截数组的方法 数组的每一项还需要监听
+      observeArray(data)
+    } else {
+      this.walk(data);
+    }
   }
   /**
    * 遍历data
@@ -9,35 +17,38 @@ export default class Observe {
    */
   walk(data) {
     if (data && typeof data === "object") {
-      Object.keys(data).forEach(key => {
+      const keys = Object.keys(data);
+      keys.forEach(key => {
         //数据劫持函数
-        this.defineReactive(data, key, data[key])
+        defineReactive(data, key, data[key])
       })
     }
   }
-  /**
-   * 动态响应式数据
+}
+
+/**
+   * Object.defineProperty来劫持对象属性的setter和getter操作，并“种下”一个监听器
    * @param {*} data 
    * @param {*} key 
    * @param {*} value 
    */
-  defineReactive(data, key, value) {
-    Object.defineProperty(data, key, {
-      configurable: false,
-      enumerable: true,
-      get() {
-        console.log("获取数据，触发get");
-        return value;
-      },
-      set(newValue) {
-        if (newValue !== value) {
-          console.log("设置数据，触发set");
-          //TODO 触发view
-          value = newValue;
-        }
+export function defineReactive(data, key, value) {
+  Object.defineProperty(data, key, {
+    configurable: false,
+    enumerable: true,
+    get() {
+      console.log(value, "获取数据，触发get");
+      return value;
+    },
+    set(newValue) {
+      if (newValue !== value) {
+        console.log(newValue, "设置数据，触发set");
+        observe(value);
+        //TODO 触发view
+        value = newValue;
       }
-    });
-    this.walk(value)
-  }
-
+    }
+  });
+  //如果是对象递归监听
+  observe(value)
 }

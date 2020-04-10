@@ -24,6 +24,7 @@ export function observe(data) {
 function initData(vm) {
   let data = vm.$options.data;
   data = vm.$data = typeof data === "function" ? data.call(vm) : data || {};
+  //数据代理
   proxyData(vm, data)
   //观察数据
   observe(data);
@@ -40,7 +41,8 @@ function initWatch() { }
  * @param {*} data 
  */
 function proxyData(vm, data) {
-  Object.keys(data).forEach(key => {
+  const keys = Object.keys(data);
+  keys.forEach(key => {
     Object.defineProperty(vm, key, {
       set(newValue) {
         data[key] = newValue;
