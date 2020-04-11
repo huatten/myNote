@@ -22,12 +22,14 @@
 <script>
   let vm = new Mvue({
     el: "#app",
-    data: {
-      msg: "hello Mvue",
-      html: "<a href='javascript:;'>hello Mvue</a>",
-      arr: [1, 2, 3, 4],
-      obj: {
-        age: 100
+    data() {
+      return {
+        msg: "hello Mvue",
+        html: "<a href='javascript:;'>v-html</a>",
+        arr: [1, 2, 3, 4, { a: 100 }],
+        obj: {
+          age: 100
+        }
       }
     },
     methods: {
@@ -36,6 +38,8 @@
       }
     }
   })
+  vm.arr.push(9); //实现了监听数组属性的变化
+  vm.arr[4].a = 99;  //99 "设置数据，触发set"
 </script>
 
 </html>

@@ -11,6 +11,8 @@ export default class Dep {
   }
   notify() {
     for (let id in this.subs) {
+      // 在 defineReactive 的 setter 中触发
+      // subs[id] 是一个 Watcher 实例
       this.subs[id].update();
     }
   }

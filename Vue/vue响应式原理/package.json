@@ -4,7 +4,8 @@
   "description": "vue responsive principle",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack-dev-server --inline"
+    "dev": "webpack-dev-server --inline",
+    "build": "webpack"
   },
   "author": "jinhua5",
   "license": "ISC",

@@ -4,8 +4,8 @@ class Mvue {
   constructor(options) {
     //获取元素的dom对象
     this.$el = this.isElementNode(options.el) ? options.$el : document.querySelector(options.el);
-    //转存数据
-    this.$data = options.data || {};
+    //转存数据 注意判断data是函数还是对象
+    this.$data = typeof options.data === "function" ? options.data.call(this) : options.data || {}
     this.methods = options.methods || {};
     //数据和函数的代理
     this._proxyData(this.$data)
@@ -48,30 +48,6 @@ class Mvue {
         this[key] = methods[key]
       })
     }
-  }
-  /**
-   * new Proxy
-   * @param {*} data 
-   */
-  _proxy(data) {
-    let handler = {
-      get(target, key) {
-        let item = target[key];
-        if (item && typeof item === "object") {
-          return new Proxy(item, handler);
-        } else {
-          return item;
-        }
-      },
-      set(target, key, value) {
-        if (target[key] !== value) {
-          target[key] = value;
-          console.log('update')
-        }
-        return true;
-      }
-    }
-    data = new Proxy(data, handler);
   }
 }
 window.Mvue = Mvue;
