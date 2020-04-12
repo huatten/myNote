@@ -9,7 +9,7 @@ methodsPatch.forEach(function (method) {
   //缓存原数组方法
   const origin = arrayProto[method];
   arrayMethods[method] = function (...args) {
-    //不光要返回新的数组方法，还要执行监听
+    //先调用原生函数获得结果 不光要返回新的数组方法，还要执行监听
     const result = origin.apply(this, args);
     //实现新增属性的监听
     console.log("实现了监听数组属性的变化")

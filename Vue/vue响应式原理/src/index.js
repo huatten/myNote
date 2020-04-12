@@ -11,6 +11,8 @@ let vm = new Vue({
   computed: {},
   watch: {}
 })
-
-vm.arr[3].age = 100
+console.log(vm)
+vm.arr[3].age = 108
 vm.arr.splice(1,2)
+
+

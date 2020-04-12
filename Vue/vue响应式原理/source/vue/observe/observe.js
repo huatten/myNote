@@ -4,6 +4,7 @@ export default class Observe {
   constructor(data) {
     //数据劫持 data => getter setter
     if (Array.isArray(data)) {
+      //修改数组的原型方法
       data.__proto__ = arrayMethods;
       //只能拦截数组的方法 数组的每一项还需要监听
       observeArray(data)
