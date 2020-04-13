@@ -32,10 +32,12 @@ export default class Compiler {
    * @param {*} node 
    */
   compilerTextNode(node) {
+    if (!node.expr) {
+      node.expr = node.textContent;
+    }
     let defaultTagRE = /\{\{((?:.|\r?\n)+?)\}\}/g;
-    let text = node.textContent.trim();
     let _vm = this.vm;
-    node.textContent = text.replace(defaultTagRE, function (...args) {
+    node.textContent = node.expr.replace(defaultTagRE, function (...args) {
       // 获取value
       let keys = args[1].split('.')
       return keys.reduce((data, current) => {

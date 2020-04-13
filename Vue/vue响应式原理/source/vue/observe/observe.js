@@ -1,5 +1,6 @@
 import { observe } from "./index";
 import { arrayMethods, observeArray } from "./array";
+import Dep from "./dep";
 export default class Observe {
   constructor(data) {
     //数据劫持 data => getter setter
@@ -34,19 +35,24 @@ export default class Observe {
    * @param {*} value 
    */
 export function defineReactive(data, key, value) {
+  let dep = new Dep();
   Object.defineProperty(data, key, {
     configurable: false,
     enumerable: true,
     get() {
       console.log(value, "获取数据，触发get");
+      Dep.target && dep.depend(); //watcher里面记录dep 同时在dep里面记录watcher
       return value;
     },
     set(newValue) {
       if (newValue !== value) {
         console.log(newValue, "设置数据，触发set");
+        //设置的有可能是对象
         observe(value);
         //TODO 触发view
         value = newValue;
+        //数据更新后 通知所有的收集依赖的watcher， 重新计算页面展示
+        dep.notify();
       }
     }
   });
