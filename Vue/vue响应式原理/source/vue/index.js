@@ -30,6 +30,7 @@ Vue.prototype.$mount = function () {
   const updateComponent = () => {
     //更新和渲染
     vm._update();
+    console.log("更新和渲染")
   }
   new Watcher(vm, updateComponent);
 }

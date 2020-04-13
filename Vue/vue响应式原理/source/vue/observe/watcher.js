@@ -29,6 +29,57 @@ export default class Watcher {
     }
   }
   update() {
+    //异步批量更新 防止重复渲染
+    queueWatcher(this); //this=>watcher
+  }
+  run() {
     this.get();
+  }
+}
+
+let has = {};
+let queen = [];
+/**
+ * 刷新watcher队列运行watcher
+ */
+function flushQueue() {
+  queen.forEach(watcher => watcher.run());
+  //clean
+  has = {};
+  queen = [];
+}
+/**
+ * 将watcher放入watcher队列
+ * 重复作业的uid将被跳过 除非在刷新队列时推送
+ * @param {*} watcher 
+ */
+function queueWatcher(watcher) {
+  const uid = watcher.uid;
+  if (has[uid] == null) {
+    has[uid] = true;
+    queen.push(watcher)
+    nextTick(flushQueue);
+  }
+}
+
+let callbacks = [];
+function flushCallbacks() {
+  callbacks.forEach(cb => cb());
+}
+/**
+ * https://github.com/vuejs/vue/blob/dev/src/core/util/next-tick.js
+ * @param {*} flushQueue 
+ */
+function nextTick(flushQueue) {
+  callbacks.push(flushQueue);
+  let asyncFn = () => {
+    flushCallbacks();
+  }
+  if (typeof Promise !== "undefined") {
+    Promise.resolve().then(asyncFn);
+  } else if (typeof setImmediate !== "undefined") {
+    setImmediate(asyncFn)
+  } else {
+    setTimeout(asyncFn, 0);
   }
 }
