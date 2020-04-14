@@ -8,9 +8,14 @@ let vm = new Vue({
       arr: [1, 2, 3, { age: 30 }],
       list: ["VUE", "REACT", "ANGULAR"],
       watchs: "$watch测试",
+      age: 6
     }
   },
-  computed: {},
+  computed: {
+    info() {
+      return `${this.msg} is ${this.age} years old!`
+    }
+  },
   watch: {
     msg(newValue, oldValue) {
       console.log("--watch start--")
@@ -50,7 +55,7 @@ setTimeout(() => {
 }, 1000)
 
 //watch 
-vm.msg = "Hello";
+vm.msg = "Vue.js";
 
 //vm.$watch
 vm.$watch('watchs', function (newVal, oldVal) {
@@ -65,3 +70,8 @@ setTimeout(() => {
 }, 2000)
 //可以看到初次进入 即可监听到school.name  打印  newVal:Buu, oldVal:undefined
 //2s之后值额更新为 newVal:USTB, oldVal:Buu
+
+//computed 
+setTimeout(()=>{
+  vm.msg = "React.js"
+}, 5000)

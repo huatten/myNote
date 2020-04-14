@@ -1,4 +1,6 @@
 import Observe from "./observe";
+import Watcher from "./watcher";
+import Dep from "./dep";
 /**
  * 各种初始化工作
  * @param {*} vm 
@@ -6,7 +8,7 @@ import Observe from "./observe";
 export function initState(vm) {
   let options = vm.$options;
   options.data && initData(vm);
-  options.computed && initComputed();
+  options.computed && initComputed(vm, options.computed);
   options.watch && initWatch(vm);
 }
 
@@ -34,7 +36,23 @@ function initData(vm) {
 
 }
 
-function initComputed() { }
+function initComputed(vm, computed) {
+  //计算属性是有缓存的,定义空对象用来存放所有计算属性相关的watcher
+  let watchers = vm._watcherComputed = Object.create(null);
+  for (let key in computed) {
+    let userDef = computed[key];
+    watchers[key] = new Watcher(
+      vm,  //实例
+      userDef, //getter 用户传入的求值函数
+      () => { },  //回调函数
+      { lazy: true } //声明lazy属性 标记computed watcher
+    );
+    //当用户取值的时候 我们将key定义到我们的vm上
+    Object.defineProperty(vm, key, {
+      get: creatComputedGetter(vm, key)
+    })
+  }
+}
 
 function initWatch(vm) {
   let watch = vm.$options.watch;
@@ -78,4 +96,20 @@ function proxyData(vm, data) {
       }
     });
   });
+}
+
+function creatComputedGetter(vm, key) {
+  let watcher = vm._watcherComputed[key];
+  return function () {
+    if (watcher) {
+      //页面取值 dirty=true 调用get方法计算
+      watcher.evalValue();
+    }
+    if(Dep.target){
+      console.log(Dep.target)
+      watcher.depend();
+    }
+    return watcher.value;
+  }
+
 }

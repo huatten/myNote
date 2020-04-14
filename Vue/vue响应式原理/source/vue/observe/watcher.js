@@ -8,12 +8,15 @@ export default class Watcher {
     if (opts) {
       this.user = !!opts.user;
       this.deep = !!opts.deep;
+      this.lazy = !!opts.lazy; //如果这个值为true 说明他是计算属性
     } else {
-      this.user = this.deep = false;
+      this.user = this.deep = this.lazy = false;
     }
+    this.dirty = this.lazy;
     this.uid = uid++;
     this.deps = [];
     this.depsId = new Set();
+    this.expOrfn = expOrfn;
     if (typeof expOrfn === "function") {
       this.getter = expOrfn;
     } else {
@@ -21,20 +24,19 @@ export default class Watcher {
       this.getter = function () {
         let keys = expOrfn.split('.');
         return keys.reduce((data, current) => {
-          return data[current];
-        }, this.vm)
+          if (data && data[current]) {
+            return data[current];
+          }
+        }, this.vm);
       }
     }
-    this.value = this.get(); //oldValue
-    if (opts) {
-      this.user = true;
-    }
-    this.get(); //默认创建一个watcher，会调用自身的方法
+    //如果是计算属性的话不会默认调用自身的get方法
+    this.value = this.lazy ? undefined : this.get();
   }
   get() {
     //初始化渲染watcher
     pushTarget(this); // Dep.target = watcher
-    let oldValue = this.getter();
+    let oldValue = this.getter.call(this.vm);
     popTarget();
     return oldValue;
   }
@@ -48,7 +50,11 @@ export default class Watcher {
   }
   update() {
     //异步批量更新 防止重复渲染
-    queueWatcher(this); //this=>watcher
+    if (this.lazy) { // 如果是计算属性
+      this.dirty = true
+    } else {
+      queueWatcher(this); //this=>watcher
+    }
   }
   run() {
     let newValue = this.get();
@@ -65,6 +71,16 @@ export default class Watcher {
       } else {
         this.cb(newValue, this.value);
       }
+    }
+  }
+  evalValue() {
+    this.value = this.get();
+    this.dirty = false;
+  }
+  depend() {
+    let i = this.deps.length;
+    while (i--) {
+      this.deps[i].depend();
     }
   }
 }
