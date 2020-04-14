@@ -41,4 +41,23 @@ Vue.prototype._update = function () {
   new Compiler(vm);
 }
 
+//$watch
+Vue.prototype.$watch = function (expOrfn, cb, opts) {
+  let vm = this;
+  //用户自己创建
+  opts = opts || {};
+  opts.user = true;
+  const watcher = new Watcher(vm, expOrfn, cb, opts);
+
+  if(opts.immediate){
+    // 如果immediate为真, 马上执行一次回调
+    try {
+      // 此时只有新值, 没有旧值, 可以看到oldValue是undefined。
+      cb.call(vm, watcher.value)
+    } catch (error) {
+      throw Error(error, `callback for immediate watcher`)
+    }
+  }
+  
+}
 export default Vue;

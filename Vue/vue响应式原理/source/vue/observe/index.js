@@ -7,7 +7,7 @@ export function initState(vm) {
   let options = vm.$options;
   options.data && initData(vm);
   options.computed && initComputed();
-  options.watch && initWatch();
+  options.watch && initWatch(vm);
 }
 
 export function observe(data) {
@@ -36,7 +36,30 @@ function initData(vm) {
 
 function initComputed() { }
 
-function initWatch() { }
+function initWatch(vm) {
+  let watch = vm.$options.watch;
+  for (let key in watch) {
+    let handler = watch[key];
+    if (Array.isArray(handler)) {
+      for (let i = 0; i < handler.length; i++) {
+        creatWatch(vm, key, handler[i])
+      }
+    } else {
+      creatWatch(vm, key, handler);
+    }
+  }
+}
+
+function creatWatch(vm, expOrfn, handler, opts) {
+  if (typeof handler == "object") {
+    opts = handler;
+    handler = handler.handler;
+  }
+  if (typeof handler == "string") {
+    handler = vm[handler];
+  }
+  return vm.$watch(expOrfn, handler, opts);
+}
 
 /**
  * 数据代理 vm.$data.msg => vm.msg

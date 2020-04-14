@@ -48,7 +48,6 @@ export function defineReactive(data, key, value) {
     configurable: false,
     enumerable: true,
     get() {
-      console.log(value, "获取数据，触发get");
       if (Dep.target) {
         dep.depend(); //watcher里面记录dep 同时在dep里面记录watcher
         if (childOb) {
@@ -60,7 +59,6 @@ export function defineReactive(data, key, value) {
     },
     set(newValue) {
       if (newValue !== value) {
-        console.log(newValue, "设置数据，触发set");
         //设置的有可能是对象
         observe(value);
         //TODO 触发view

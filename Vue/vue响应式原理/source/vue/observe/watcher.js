@@ -1,26 +1,44 @@
 import { pushTarget, popTarget } from "./dep";
 let uid = 0;
 export default class Watcher {
-  constructor(vm, expOrfn, cb = () => { }) {
+  constructor(vm, expOrfn, cb = () => { }, opts) {
     this.vm = vm;
     this.expOrfn = expOrfn;
     this.cb = cb;
+    if (opts) {
+      this.user = !!opts.user;
+      this.deep = !!opts.deep;
+    } else {
+      this.user = this.deep = false;
+    }
     this.uid = uid++;
     this.deps = [];
     this.depsId = new Set();
     if (typeof expOrfn === "function") {
       this.getter = expOrfn;
+    } else {
+      //key
+      this.getter = function () {
+        let keys = expOrfn.split('.');
+        return keys.reduce((data, current) => {
+          return data[current];
+        }, this.vm)
+      }
+    }
+    this.value = this.get(); //oldValue
+    if (opts) {
+      this.user = true;
     }
     this.get(); //默认创建一个watcher，会调用自身的方法
   }
   get() {
     //初始化渲染watcher
     pushTarget(this); // Dep.target = watcher
-    this.getter();
+    let oldValue = this.getter();
     popTarget();
+    return oldValue;
   }
   addDep(dep) {
-    console.log(dep)
     let uid = dep.uid;
     if (!this.depsId.has(uid)) {
       this.depsId.add(uid);
@@ -33,7 +51,21 @@ export default class Watcher {
     queueWatcher(this); //this=>watcher
   }
   run() {
-    this.get();
+    let newValue = this.get();
+    //对比新值newValue和旧值this.value是否相等
+    if (newValue !== this.value || typeof this.value === "object" || this.deep) {
+      if (this.user) {
+        // 意味着这个观察者是开发者定义的，所谓开发者定义的是指那些通过 watch 选项或 $watch 函数定义的观察者
+        try {
+          this.cb(newValue, this.value)
+        } catch (e) {
+          // 回调函数在执行的过程中其行为是不可预知, 出现错误给出提示
+          throw Error(e);
+        }
+      } else {
+        this.cb(newValue, this.value);
+      }
+    }
   }
 }
 
