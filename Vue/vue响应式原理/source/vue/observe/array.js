@@ -27,6 +27,7 @@ methodsPatch.forEach(function (method) {
     //实现新增属性监听
     inserted && observeArray(inserted);
     //TODO 通知其他使用者改变
+    this.__ob__.dep.notify();
     return result;
   }
 })
@@ -37,5 +38,17 @@ methodsPatch.forEach(function (method) {
 export function observeArray(inserted) {
   for (let i = 0; i < inserted.length; i++) {
     observe(inserted[i])
+  }
+}
+/**
+ * 递归收集依赖
+ * @param {*} value 
+ */
+export function dependArray(value) {
+  for (let i = 0; i < value.length; i++) {
+    const curValue = value[i];
+    curValue.__ob__ && curValue.__ob__.dep.depend();
+    //递归收集依赖
+    Array.isArray(curValue) && dependArray(curValue);
   }
 }

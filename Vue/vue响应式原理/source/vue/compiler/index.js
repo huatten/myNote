@@ -1,4 +1,4 @@
-import { nodeToFragment } from "../util"
+import { nodeToFragment } from "../util";
 export default class Compiler {
   constructor(vm) {
     this.$el = vm.$el;
@@ -45,6 +45,4 @@ export default class Compiler {
       }, _vm)
     })
   }
-
-
 }

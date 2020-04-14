@@ -13,7 +13,10 @@ export function initState(vm) {
 export function observe(data) {
   if (data && typeof data === "object") {
     //观察数据的业务逻辑
-    return new Observe(data)
+    if (data.__ob__) {
+      return data.__ob__;
+    }
+    return new Observe(data);
   }
 }
 
