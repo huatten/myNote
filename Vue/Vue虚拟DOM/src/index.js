@@ -1,18 +1,18 @@
-import { h } from "./vdom";
+import { h, render } from "./vdom";
 /**
- * <div id="app" attr="1" key="99" @click="handler">
- *  <span style="color="red">Virtual</span>
+ * <div id="wrap" attr="1" key="99" @click="handler">
+ *  <span style="color="#42b983">Virtual</span>
  *  DOM
   </div>
  */
 const vdom = {
-  type: "div",
-  props: { id: "app", attr: "1", onClick: "handler" },
+  tag: "div",
+  props: { id: "wrap", attr: "1", onClick: "handler" },
   children: [
-    { type: "span", props: { color: "red", }, children: [{ type: "", props: "", children: [], text: "Virtual" }] },
-    { type: "", props: "", children: [], text: "DOM" }
+    { tag: "span", props: { color: "#42b983", }, children: [{ tag: "", props: "", children: [], text: "Virtual" }] },
+    { tag: "", props: "", children: [], text: "DOM" }
   ]
 }
 
-let vnode = h("div", { id: "app", attr: 1, key: 99, onClick: "handler" }, h("span", { style: { color: "red" } }, "Virtual"), "DOM");
-console.log(vnode)
+let vnode = h("div", { id: "wrap", attr: 1, key: 99, onClick: "handler", style: { color: "#f90892" } }, h("span", { style: { color: "#42b983" } }, "Virtual"), "DOM");
+render(vnode, app);

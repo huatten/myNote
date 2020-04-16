@@ -1,4 +1,6 @@
 import h from "./h";
+import { render } from "./patch";
 export {
-  h
+  h,
+  render
 }
