@@ -1,0 +1,21 @@
+{
+  "name": "virtualdom",
+  "version": "1.0.0",
+  "description": "Virtual DOM原理与实现",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "webpack-dev-server --inline"
+  },
+  "author": "jinhua5",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/plugin-transform-react-jsx": "^7.9.4",
+    "@babel/preset-env": "^7.9.5",
+    "babel-loader": "^8.1.0",
+    "html-webpack-plugin": "^4.2.0",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
+  }
+}
