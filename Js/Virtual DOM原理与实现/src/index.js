@@ -21,6 +21,36 @@ function isPlainObject(obj) {
 }
 
 /**
+ * compare whether object has changed
+ * @param {*} obj1 
+ * @param {*} obj2 
+ */
+function isObjChanged(obj1, obj2) {
+  //data type
+  if (isPlainObject(obj1) !== isPlainObject(obj2)) {
+    return true;
+  }
+  //object
+  if (isPlainObject(obj1)) {
+    const obj1Keys = Object.keys(obj1);
+    const obj2Keys = Object.keys(obj2);
+    if (obj1Keys.length !== obj2Keys.length) {
+      return true;
+    }
+    if (obj1Keys.length === 0) {
+      return false;
+    }
+    for (let i = 0; i < obj1Keys.length; i++) {
+      let key = obj1Keys[i];
+      if (obj1[key] !== obj2[key]) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+/**
  * rendering virtual DOM into real DOM
  * @param {*} vnode 
  */
@@ -53,13 +83,14 @@ function createDomElementFromVnode(vnode) {
  * @param {*} vnode2 
  */
 function isVnodeChanged(vnode1, vnode2) {
-  return typeof vnode1 !== typeof vnode2 ||
-    typeof vnode1 === 'string' && vnode1 !== vnode2 ||
-    vnode1.type !== vnode2.type
+  if (isPlainObject(vnode1) && isPlainObject(vnode2)) {
+    return vnode1.type !== vnode2.type;
+  }
+  return vnode1 !== vnode2;
 }
 
-function updateElement($parent, oldNode, newNode, index = 0) {
 
+function updateElement($parent, oldNode, newNode, index = 0) {
   const $currentNode = $parent.childNodes[index];
   if (!oldNode) {
     //no oldNode apend newNode
@@ -77,8 +108,34 @@ function updateElement($parent, oldNode, newNode, index = 0) {
   if (oldNode === newNode) {
     return;
   }
+  //props changed
+  if (isObjChanged(oldNode.props, newNode.props)) {
+    const oldProps = oldNode.props || {};
+    const newProps = newNode.props || {};
+    const oldPropsKeys = Object.keys(oldProps);
+    const newPropsKeys = Object.keys(newProps);
+    if (newPropsKeys.length === 0) {
+      oldPropsKeys.forEach(prop => $currentNode.removeAttribute(prop))
+    } else {
+      const allKeys = new Set([...oldPropsKeys, ...newPropsKeys]);
+      allKeys.forEach(prop => {
+        //no oldprops, need to set newprops
+        if (oldProps[prop] === undefined) {
+          return $currentNode.setAttribute(prop, newProps[prop]);
+        }
+        //no newprops, need to remove oldprops
+        if (newProps[prop] === undefined) {
+          return $currentNode.removeAttribute(prop);
+        }
+        //compare whether the two props the same
+        if (oldProps[prop] !== newProps[prop]) {
+          return $currentNode.setAttribute(prop, newProps[prop]);
+        }
+      })
+    }
+  }
   //Diff children
-  if ((oldNode.children && oldNode.children.length) || (newNode.children && newNode.children.length)) {
+  if (newNode.type) {
     let maxLength = Math.max(oldNode.children.length, newNode.children.length);
     for (let i = 0; i < maxLength; i++) {
       updateElement($currentNode, oldNode.children[i], newNode.children[i], i)
@@ -89,7 +146,10 @@ function updateElement($parent, oldNode, newNode, index = 0) {
 
 const $app = document.getElementById("app");
 const previous = null;
-const current = <ul class="cont" style="color:red"><li>Virtual</li><li>DOM</li></ul>;
+const current = <div class="list">
+  <p>item 1</p>
+  <p>item 2</p>
+</div>
 
 //apend newNode
 const $appendNewNode = document.getElementById('append');
@@ -99,20 +159,66 @@ $appendNewNode.addEventListener("click", e => {
 
 //remove oldNode
 const $removeNewNode = document.getElementById('remove');
+const removeNode = <div class="list">
+  <p>item 1</p>
+</div>;
 $removeNewNode.addEventListener("click", e => {
-  updateElement($app, current, null);
+  updateElement($app, current, removeNode);
 })
 
-//vnode.type or string change 
+//vnode.type or string change
 const $nodeType = document.getElementById("nodeType");
-const vnodeTypechanged = <ol class="cont" style="color:blue"><li>vnode.type</li><li>changed</li></ol>;
+const vnodeTypechanged = <div class="list">
+  <p>item 1</p>
+  <span>span</span>
+</div>;
 $nodeType.addEventListener("click", e => {
   updateElement($app, current, vnodeTypechanged);
 })
 
 //Diff children
 const $diffChildren = document.getElementById("diffChildren");
-const nodeChanged = <ul class="cont" style="color:red"><li>Diff</li><li>Children</li></ul>;
+const nodeChanged = <div class="list">
+  <p>item 1</p>
+  <p>
+    <span>item 2-1</span>
+    <span>diff chilren</span>
+  </p>
+</div>;
 $diffChildren.addEventListener("click", e => {
   updateElement($app, current, nodeChanged);
+});
+
+//props update
+const $propsUpdate = document.getElementById("propsUpdate");
+const initprevious = null;
+const initcurrent = <ul class="props-init">
+  <li class="item1">hello</li>
+  <li>
+    <div>
+      <h2>
+        <p>
+          <span class="props-name" data-props="Props">Props</span>
+        </p>
+      </h2>
+    </div>
+  </li>
+</ul>;
+const propsChanged = <ul class="props-changed">
+  <li class="item1">hello</li>
+  <li>
+    <div>
+      <h2>
+        <p>
+          <span class="props-name-changed" data-props="Update">Update</span>
+        </p>
+      </h2>
+    </div>
+  </li>
+</ul>;
+$propsUpdate.addEventListener("click", e => {
+  updateElement($app, initprevious, initcurrent);
+  setTimeout(() => {
+    updateElement($app, initcurrent, propsChanged)
+  }, 10000)
 });
