@@ -2,7 +2,7 @@
 
 ### VirtualDOM的原理与实现
 
-#####一、背景
+##### 一、背景
 
 我们都知道JavaScript很快，但是DOM很慢。为什么呢？这里需要对浏览器利用 HTML/CSS/JavaScript 等资源呈现出精彩的页面的过程进行简单说明。
 
@@ -14,11 +14,11 @@
 
 看了上面的过程我们知道，使用Javascript来操纵DOM，操作效率往往很低，由于DOM被表示为树结构，每次DOM中的某些内容都会发生变化，因此对DOM的更改非常快，但更改后的元素，并且它的子项必须经过 `Reflow / Layout` 阶段，然后浏览器必须重新绘制更改，这很慢的。因此，回流/重绘的次数越多，您的应用程序就越卡顿，但是JavaScript运行速度很快，Virtual DOM是放在JS和HTML中间的一个层。她可以通过新旧DOM对比，来获取对比之后的差异对象，然后有针对性的把差异部分应用到渲染的DOM树上，从而减少实际DOM操作，最终达到性能优化。
 
-#####二、什么是Virtual DOM
+##### 二、什么是Virtual DOM
 
 总结一句话来说，Virtual DOM是对DOM的抽象，本质上是JavaScript对象，这个对象就是更加轻量级的对DOM的描述。
 
-#####三、理解Virtual DOM
+##### 三、理解Virtual DOM
 
 虚拟DOM，就是用JS对象结构的一种映射，比如下面的DOM树，如何用js对象表示呢？
 
@@ -29,7 +29,7 @@
 </ul>
 ```
 
-```json
+```javascript
 {
   type: "ul",   //节点类型
   props: {class: "list"}, //属性
@@ -98,7 +98,7 @@ function createElement(tag, props = {}, children) {
 
 主流的框架均支持使用 JSX 的写法， JSX 最终会被 babel 编译为JavaScript 对象，用于来表示Virtual DOM，案例中的Virtual DOM是通过babel插件 [@babel/plugin-transform-react-jsx](https://babeljs.io/docs/en/next/babel-plugin-transform-react-jsx.html) 转换生成的。
 
-#####五、Virtual DOM渲染成真实DOM
+##### 五、Virtual DOM渲染成真实DOM
 
 好了，现在我们已经将DOM树表示为简单的JS对象，并使用自己的结构。但我们需要从中创建一个真正的DOM，因为我们不能把JS对象表示添加到DOM中去。
 
@@ -254,7 +254,7 @@ demo运行：
   demo运行：
 ![diff-children](./example/image/diff-children.gif)
 
-#####七、props 对比更新
+##### 七、props 对比更新
 
 现在编写一个函数，它将比较两个属性（oldProps和newProps）是否发生了变化，然后根据比较的结果来更新来修改实际的DOM节点属性值。
 
