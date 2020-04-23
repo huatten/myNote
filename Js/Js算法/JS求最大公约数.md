@@ -1,8 +1,8 @@
-# JS求最大公约数
+##JS求最大公约数
 
 关于最大公约数的解释定义可以查看 [百度百科]([https://baike.baidu.com/item/%E6%9C%80%E5%A4%A7%E5%85%AC%E7%BA%A6%E6%95%B0/869308?fr=aladdin#1](https://baike.baidu.com/item/最大公约数/869308?fr=aladdin#1)) 。常见的求最大公约数的方法有下面几种：[质因数分解法](https://baike.baidu.com/item/质因数分解)、[短除法](https://baike.baidu.com/item/短除法/3640958)、[辗转相除法(欧几里德算法)](https://baike.baidu.com/item/辗转相除法/4625352)、[更相减损法](https://baike.baidu.com/item/更相减损法/10277459)、[尼考曼彻斯法(辗转相减法)](https://baike.baidu.com/item/尼考曼彻斯法)。
 
-##### 1.质因数分解法
+#### 1.质因数分解法
 
 把每个数分别分解质因数，再把各数中的全部公有质因数提取出来连乘，所得的积就是这几个数的**最大公约数**。
 
@@ -14,7 +14,37 @@
 //公有质因数是2和3，乘积是6
 ```
 
-##### 2.短除法
+下面先实现一下如何将一个数进行质因数分解：
+
+```javascript
+function decompose(n){
+  let handle = n;
+  let res = [], i = 1;
+  while(i < handle){
+    i++;
+    while(handle % i === 0){
+      handle = handle / i;
+      res.push(i)
+    }
+  }
+  return res;
+}
+decompose(108); //[2, 2, 3, 3, 3]
+```
+
+得到了质因数，那么求最大质因数就简单了：
+
+```javascript
+function gcd(a, b){
+  let m = decompose(a), n = decompose(b);
+  let gcdarr = m.filter(item => n.some(ele => ele === item));
+  return gcdarr.reduce(function(x, y){
+     return x * y;
+  }); 
+}
+```
+
+#### 2.短除法
 
 先用这几个数的公约数连续去除，一直除到所有的商互质为止，然后把所有的除数连乘起来，所得的积就是这几个数的最大公约数。
 
@@ -22,7 +52,7 @@
 
 ![181587552884_ pic](https://user-images.githubusercontent.com/10781715/79973849-dc269e00-84ca-11ea-9219-8a0889c27bcd.jpg)
 
-##### 3.辗转相除法
+#### 3.辗转相除法
 
 辗转相除法又叫做欧几里德算法，计算公式gcd(a,b) = gcd(b,a mod b)，扩展欧几里德算法可用于[RSA](https://baike.baidu.com/item/RSA)加密等领域。
 
@@ -90,7 +120,7 @@ function gcd(a, b){
 }
 ```
 
-##### 4.更相减损术
+#### 4.更相减损术
 
 更相减损术是出自《九章算术》的一种求最大公约数的算法，它原本是为约分而设计的，但它适用于任何需要求最大公约数的场合。原文是：可半者半之，不可半者，副置分母、子之数，以少减多，更相减损，求其等也。以等数约之。
 
@@ -158,7 +188,7 @@ function gcd(a, b){
 }
 ```
 
-##### 5.辗转相减法
+#### 5.辗转相减法
 
 辗转相减法（求最大公约数），即尼考曼彻斯法，其特色是做一系列减法，从而求得最大公约数，与更相减损术不同的是，我们不需要进行取半操作，只进行辗转相减运算。
 
@@ -196,7 +226,7 @@ function gcd(a, b){
 }
 ```
 
-##### 6.普通轮询
+#### 6.普通轮询
 
 如果在不知道算法的情况下，当然可以使用暴力轮询了....
 
