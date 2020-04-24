@@ -1,0 +1,14 @@
+{
+  "name": "typescript-lesson",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "typescript": "^3.4.5"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "jinhua5",
+  "license": "ISC"
+}

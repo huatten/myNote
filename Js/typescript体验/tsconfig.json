@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "strict": false, // 是否开启严格模式
+    "target": "es5", //编译之后生成的js需要遵循的标准，三个候选项：es3 es5 es2015
+    "noImplicitAny": true, //为false的时候，如果编译器无法根据变量的使用来判断类型时，将用any类型替代。为true时，将进行强类型检查，无法推断类型时提示错误
+    "declaration": true, // 是否生成声明文件
+    "downlevelIteration": true, // 额外支持解构/forof等功能
+    "module": "commonjs", //遵循的js模块规范，主要有commomjs AMD和es2015
+    "removeComments": false, //编译后的js是否去除注释
+    "preserveConstEnums": true, // 保留 const和 enum声明
+    "sourceMap": false, //编译是否生成对应的source map文件
+    "outDir": "./es", //编译输出的js存放文件夹位置
+    "lib": [
+      "dom",
+      "es5",
+      "scripthost"
+    ], //编译时引入的 ES 功能库 包括：es5 、es6、es7、dom 等。如果未设置，则默认为： target 为 es5 时: ["dom", "es5", "scripthost"] target 为 es6 时: ["dom", "es6", "dom.iterable", "scripthost"]
+    "moduleResolution": "node", // 此处设置为node,才能解析import xx from 'xx'
+  },
+  "exclude": [ //排除的文件夹
+    "node_modules"
+  ],
+  "include": [ //入口文件
+    "./ts/*"
+  ]
+}
