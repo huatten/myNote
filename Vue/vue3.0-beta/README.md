@@ -40,15 +40,16 @@ vue add vue-next
 
 ### Vue3.0基本特性体验
 
-- Composition API  👉  [useMouse](./src/component/useMouse.js)
-- setup 👉  [demo1](./src/component/demo1.vue)
-- props和context 👉   [demo2](./src/component/demo2.vue)
-- reactive和ref  👉  [demo3](./src/component/demo3.vue)
-- computed 👉   [demo4](./src/component/demo4.vue)
-- watch和watchEffect  👉  [demo5](./src/component/demo5.vue)
-- lifeCycle Hooks  👉  [demo6](./src/component/demo6.vue)
+- Composition API  👉  [useMouse](./src/components/useMouse.js)
+- setup 👉  [demo1](./src/components/demo1.vue)
+- props和context 👉   [demo2](./src/components/demo2.vue)
+- reactive和ref  👉  [demo3](./src/components/demo3.vue)
+- computed 👉   [demo4](./src/components/demo4.vue)
+- watch和watchEffect  👉  [demo5](./src/components/demo5.vue)
+- lifeCycle Hooks  👉  [demo6](./src/components/demo6.vue)
 - 后续体验...
 
-参考文章
+### 参考文章
+
 - [Vue Composition API](https://vue-composition-api-rfc.netlify.app/#summary)
 - [Vue Function-based API RFC](https://zhuanlan.zhihu.com/p/68477600)
