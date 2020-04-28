@@ -15,6 +15,9 @@
       <button @click="themeColor='pink'">粉色</button>
     </div>
     <demo8></demo8>
+    <demo9></demo9>
+    <demo10></demo10>
+    
   </div>
 </template>
 
@@ -27,6 +30,8 @@ import demo5 from "../components/demo/demo5";
 import demo6 from "../components/demo/demo6";
 import demo7 from "../components/demo/demo7";
 import demo8 from "../components/demo/demo8";
+import demo9 from "../components/demo/demo9";
+import demo10 from "../components/demo/demo10";
 import { useMouse } from "../composables/use-mouse";
 import { reactive, provide, ref } from "vue";
 export default {
@@ -51,7 +56,18 @@ export default {
       themeColor
     };
   },
-  components: { demo1, demo2, demo3, demo4, demo5, demo6, demo7, demo8 }
+  components: {
+    demo1,
+    demo2,
+    demo3,
+    demo4,
+    demo5,
+    demo6,
+    demo7,
+    demo8,
+    demo9,
+    demo10
+  }
 };
 </script>
 
