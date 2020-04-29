@@ -191,7 +191,7 @@ class Columns extends React.Component {
 
 ```vue
 <Suspense>
-  <template >
+  <template #default>
     <Suspended-component />
   </template>
   <template #fallback>
