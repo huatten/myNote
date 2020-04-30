@@ -17,7 +17,6 @@
     <demo8></demo8>
     <demo9></demo9>
     <demo10></demo10>
-    
   </div>
 </template>
 
@@ -35,6 +34,7 @@ import demo10 from "../components/demo/demo10";
 import { useMouse } from "../composables/use-mouse";
 import { reactive, provide, ref } from "vue";
 export default {
+  name: "Demo",
   setup() {
     const state = reactive({
       count: 0

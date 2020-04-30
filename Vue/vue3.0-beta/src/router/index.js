@@ -14,6 +14,12 @@ export const routes = [
     component: () => import(/* webpackChunkName: "demo" */ '../views/Demo.vue'),
     title: "认识Composition API"
   },
+  {
+    path: '/pullupLoad',
+    name: 'PullupLoad',
+    component: () => import(/* webpackChunkName: "pullupLoad" */ '../views/PullupLoad.vue'),
+    title: "Composition API实战-上拉加载"
+  },
 
 ]
 
