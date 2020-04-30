@@ -1,8 +1,6 @@
 # vue3.0-beta体验
 2020年4月17日凌晨4点左右看到尤大的提交记录，`vue-next v3.0.0-beta.1` 正式发布，意味着Vue3.0距离正式发布不远了，具体的发布内容大家可以戳[这里](https://github.com/vuejs/vue-next)，具体的Roadmap可以戳 [这里](https://github.com/vuejs/vue/projects/6)。
 
-
-
 ### Vue3.0新特性
 
 4月21日晚，尤大在哔哩哔哩直播分享了`Vue.js 3.0 Beta`最新进展，想看整体尤大直播的过程的戳 [这里](https://www.bilibili.com/video/BV1eK4y1k7BP?t=16)，想看文字稿的可以看劝退大佬 [总结](https://juejin.im/post/5e9f6b3251882573a855cd52?utm_source=gold_browser_extension)，下面是自己的一点认识和总结。
@@ -458,6 +456,10 @@ createApp(App).use(router).mount('#app');
 - Suspense  👉  [demo9](./src/components/demo/demo9.vue)
 - Teleport  👉  [demo10](./src/components/demo/demo10.vue)
 - 后续体验...
+
+### Composition API应用
+
+- 实现上拉加载   👉   [PullupLoad](./src/views/PullupLoad.vue)
 
 ### 参考文章
 
