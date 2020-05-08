@@ -18,8 +18,14 @@ export const routes = [
     path: '/pullupLoad',
     name: 'PullupLoad',
     component: () => import(/* webpackChunkName: "pullupLoad" */ '../views/PullupLoad.vue'),
-    title: "Composition API实战-上拉加载"
+    title: "Composition API实战-PullupLoad"
   },
+  {
+    path: '/datePicker',
+    name: 'DatePicker',
+    component: () => import(/* webpackChunkName: "datePicker" */ '../views/DatePicker.vue'),
+    title: "Composition API实战-DatePicker"
+  }
 
 ]
 
