@@ -50,7 +50,7 @@
     var res3 = buildName("Jack", "Ma");
     //JavaScript里，每个参数都是可选的，可传可不传。 没传参的时候，它的值就是undefined。 
     //在TypeScript里我们可以在参数名旁使用 ?实现可选参数的功能。
-    //可选参数必须跟在必须参数后面。
+    //可选参数必须跟在必须参数后面，也就是说：可选参数后面不允许再出现必需参数了
     function createName(firstName, lastName) {
         if (lastName) {
             return firstName + "" + lastName;
@@ -78,4 +78,20 @@
         return firstName + "" + restNames.join(" ");
     }
     var name_1 = buildNames("Jack", "Ma", "Kd", "Curry");
+}
+{
+    var myName = void 0;
+    myName = function (firstName, lastName) {
+        return firstName + "" + lastName;
+    };
+}
+{
+    function fnReverse(x) {
+        if (typeof x === 'string') {
+            return x.split('').reverse().join('');
+        }
+        if (typeof x === 'number') {
+            return Number(x.toString().split('').reverse().join(''));
+        }
+    }
 }

@@ -56,7 +56,7 @@
 
   //JavaScript里，每个参数都是可选的，可传可不传。 没传参的时候，它的值就是undefined。 
   //在TypeScript里我们可以在参数名旁使用 ?实现可选参数的功能。
-  //可选参数必须跟在必须参数后面。
+  //可选参数必须跟在必须参数后面，也就是说：可选参数后面不允许再出现必需参数了
   function createName(firstName: string, lastName?: string): string {
     if (lastName) {
       return firstName + "" + lastName
@@ -80,4 +80,37 @@
     return firstName + "" + restNames.join(" ")
   }
   let name = buildNames("Jack", "Ma", "Kd", "Curry")
+}
+
+{
+  /**
+   * 用接口定义函数的形状
+   */
+  interface NameFunc {
+    (firstName: string, lastName: string): string;
+  }
+  let myName: NameFunc;
+  myName = function (firstName: string, lastName: string) {
+    return firstName + "" + lastName;
+  }
+}
+
+{
+  /**
+   * 重载
+   * 重载允许一个函数接受不同数量或类型的参数时，作出不同的处理。
+   * TypeScript 中的函数重载没有任何运行时开销。它只允许你记录希望调用函数的方式，并且编译器会检查其余代码。
+   * 比如实现 数字123 反转 成为321   字符串hello 反转成为olleh
+   * 可直接使用联合类型，然而这样有一个缺点，就是不能够精确的表达
+   */
+  function fnReverse(x: string): string;
+  function fnReverse(x: number): number;
+  function fnReverse(x: string | number): string | number {
+    if (typeof x === 'string') {
+      return x.split('').reverse().join('');
+    }
+    if (typeof x === 'number') {
+      return Number(x.toString().split('').reverse().join(''));
+    }
+  }
 }
