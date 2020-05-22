@@ -21,3 +21,5 @@ vue3.0-beta版本发布了,启宗一大亮点就是对ts支持更友好了，同
  - [英文网站](https://www.typescriptlang.org/docs/home.html)
  - [中文网站](https://www.tslang.cn/docs/home.html)
  - [awesome-typescript](https://github.com/semlinker/awesome-typescript)
+ - [Typescript入门教程](https://ts.xcatliu.com/)
+ - [深入理解 TypeScript](https://jkchao.github.io/typescript-book-chinese/#why)
