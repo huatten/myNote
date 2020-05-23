@@ -5,7 +5,7 @@
     function sum(a, b) {
         return a + b;
     }
-    var add = function (a, b) {
+    var add_1 = function (a, b) {
         return a + b;
     };
 }

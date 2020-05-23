@@ -20,6 +20,12 @@ vue3.0-beta版本发布了,启宗一大亮点就是对ts支持更友好了，同
 ####  Ts枚举
 [enum.ts](./ts/enum.ts)
 
+#### Ts类型推论
+[type-inference.ts](./ts/type-inference.ts)
+
+#### Ts类型兼容性
+[type-compatibility.ts](./ts/type-compatibility.ts)
+
 #### 相关文档：
  - [英文网站](https://www.typescriptlang.org/docs/home.html)
  - [中文网站](https://www.tslang.cn/docs/home.html)

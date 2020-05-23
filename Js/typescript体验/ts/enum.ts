@@ -42,3 +42,39 @@
     Yes = "YES"
   }
 }
+
+{
+  /**
+   * 常数枚举
+   * 常数枚举是使用 const enum 定义的枚举类型
+   * 常数枚举与普通枚举的区别是，它会在编译阶段被删除，并且不能包含计算成员。
+   */
+  const enum Direction {
+    Up,
+    Down,
+    Left,
+    Right
+  }
+  //上述编译结果：  var directions = [0 /* Up */, 1 /* Down */, 2 /* Left */, 3 /* Right */];
+  //假如包含了计算成员，则会在编译阶段报错： const enum Color { Red, Green, Blue = "blue".length };
+}
+
+{
+  /**
+   * 外部枚举
+   * 外部枚举（Ambient Enums）是使用 declare enum 定义的枚举类型
+   */
+
+  declare enum Direction {
+    Up,
+    Down,
+    Left,
+    Right
+  }
+  declare const enum Directions {
+    Up,
+    Down,
+    Left,
+    Right
+  }
+}

@@ -11,6 +11,20 @@
  *  3.灵活控制类型之间的约束
  */
 {
+    /**
+     * 非泛型函数的类型: let Show: (arg: any) => any;
+     * 泛型函数的类型:  let Hide: <T>(arg: T) => T  类型参数T
+     */
+    function show(arg) {
+        return arg;
+    }
+    var Show = show; //let Show: (arg: any) => any;
+    function hide(arg) {
+        return arg;
+    }
+    var Hide = hide;
+}
+{
     function log(val) {
         console.log(val);
         //console.log(val.length) //Property 'length' does not exist on type 'T'.
@@ -27,10 +41,6 @@
     var myEcho = echo;
 }
 {
-    /**
-     * 泛型接口
-     * 使用含有泛型的接口来定义函数的形状
-     */
     function print(val) {
         return val;
     }
