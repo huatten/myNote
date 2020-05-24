@@ -38,6 +38,9 @@ vue3.0-beta版本发布了,启宗一大亮点就是对ts支持更友好了，同
 #### Ts高级类型-映射类型
 [mapping-types.ts](./ts/mapping-types.ts)
 
+#### Ts高级类型-条件类型
+[condition-types.ts](./ts/condition-types.ts)
+
 #### 相关文档：
  - [英文网站](https://www.typescriptlang.org/docs/home.html)
  - [中文网站](https://www.tslang.cn/docs/home.html)
