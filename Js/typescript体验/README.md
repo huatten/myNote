@@ -26,6 +26,18 @@ vue3.0-beta版本发布了,启宗一大亮点就是对ts支持更友好了，同
 #### Ts类型兼容性
 [type-compatibility.ts](./ts/type-compatibility.ts)
 
+#### Ts高级类型-交叉类型
+[intersection-types.ts](./ts/intersection-types.ts)
+
+#### Ts高级类型-联合类型
+[union-types.ts](./ts/union-types.ts)
+
+#### Ts高级类型-索引类型
+[index-types.ts](./ts/index-types.ts)
+
+#### Ts高级类型-映射类型
+[mapping-types.ts](./ts/mapping-types.ts)
+
 #### 相关文档：
  - [英文网站](https://www.typescriptlang.org/docs/home.html)
  - [中文网站](https://www.tslang.cn/docs/home.html)
